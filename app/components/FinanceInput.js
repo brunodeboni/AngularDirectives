@@ -19,7 +19,7 @@ myApp.directive('financeInput', function () {
 						element.val(999999999);
 					}
 					else {
-						element.val(final);
+						element.val(addCommas(final));
 					}
 				}
 
@@ -61,6 +61,10 @@ myApp.directive('financeInput', function () {
 			});
 
 			function addCommas(inputVal) {
+				//сonvert to string
+				inputVal = inputVal.toString();
+
+
 				var decimalSplit = inputVal.split(".");
 				var intPart = decimalSplit[0];
 				var decPart = decimalSplit[1];
