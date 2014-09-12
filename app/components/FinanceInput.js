@@ -9,7 +9,8 @@ myApp.directive('financeInput', function () {
 				return numericString.replace(/[^\d.]/g, '');
 			}
 
-			var max = "999,999,999";
+			var max = "99,999,999,999.9";
+			var maxValue = 99999999999.9;
 
 			element.bind("keyup", function (evt) {
 				if (evt.keyCode == 75) {
@@ -17,7 +18,7 @@ myApp.directive('financeInput', function () {
 					inputVal = clean(inputVal);
 					var parsedVal = parseFloat(inputVal);
 					var final = parsedVal * 1000;
-					if (final > 1000000000) {
+					if (final > maxValue) {
 						element.val(max);
 					}
 					else {
@@ -30,7 +31,7 @@ myApp.directive('financeInput', function () {
 					inputVal = clean(inputVal);
 					var parsedVal = parseFloat(inputVal);
 					var final = parsedVal * 1000000;
-					if (final > 1000000000) {
+					if (final > maxValue) {
 						element.val(max);
 					}
 					else {
@@ -43,7 +44,7 @@ myApp.directive('financeInput', function () {
 					inputVal = clean(inputVal);
 					var parsedVal = parseFloat(inputVal);
 					var final = parsedVal * 1000000000;
-					if (final > 1000000000) {
+					if (final > maxValue) {
 						element.val(max);
 					}
 					else {
