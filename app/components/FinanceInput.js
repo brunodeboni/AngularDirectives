@@ -9,6 +9,8 @@ myApp.directive('financeInput', function () {
 				return numericString.replace(/[^\d.]/g, '');
 			}
 
+			var max = "999,999,999";
+
 			element.bind("keyup", function (evt) {
 				if (evt.keyCode == 75) {
 					var inputVal = element.val();
@@ -16,7 +18,7 @@ myApp.directive('financeInput', function () {
 					var parsedVal = parseFloat(inputVal);
 					var final = parsedVal * 1000;
 					if (final > 1000000000) {
-						element.val(999999999);
+						element.val(max);
 					}
 					else {
 						element.val(addCommas(final));
@@ -29,10 +31,10 @@ myApp.directive('financeInput', function () {
 					var parsedVal = parseFloat(inputVal);
 					var final = parsedVal * 1000000;
 					if (final > 1000000000) {
-						element.val(999999999);
+						element.val(max);
 					}
 					else {
-						element.val(final);
+						element.val(addCommas(final));
 					}
 				}
 
@@ -42,10 +44,10 @@ myApp.directive('financeInput', function () {
 					var parsedVal = parseFloat(inputVal);
 					var final = parsedVal * 1000000000;
 					if (final > 1000000000) {
-						element.val(999999999);
+						element.val(max);
 					}
 					else {
-						element.val(final);
+						element.val(addCommas(final));
 					}
 				}
 			});
@@ -53,7 +55,7 @@ myApp.directive('financeInput', function () {
 
 			element.bind("blur", function (evt) {
 
-				var inputVal =  clean(element.val());
+				var inputVal = clean(element.val());
 				parsed = parseFloat(inputVal).toString();
 				//clear ending zeros
 				element.val(addCommas(parsed));
