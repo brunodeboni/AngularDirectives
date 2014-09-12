@@ -50,31 +50,17 @@ myApp.directive('financeInput', function () {
 				}
 			});
 
-			return ctrl.$parsers.push(function (inputValue) {
-				var inputVal = element.val();
 
+			element.bind("blur", function (evt) {
 
-
-				//get rid of bad input
-				inputVal = clean(inputVal);
-
-				//clear trailing zeros
-				while (inputVal.charAt(0) == '0') {
-					inputVal = inputVal.substr(1);
-				}
-
+				var inputVal =  clean(element.val());
+				parsed = parseFloat(inputVal).toString();
 				//clear ending zeros
-				while (inputVal.charAt(inputVal.length - 1) == '0') {
-					inputVal = inputVal.substr(0,inputVal.length - 1);
-				}
+				element.val(addCommas(parsed));
 
-				//we now have pure number, test for precision and remove least significant digit
-				if (inputVal.replace(/[^0-9]/g, "").length > 10) {
-					inputVal = inputVal.match(/(([0-9][,.]?){10})/).shift();
-				}
+			});
 
-
-
+			function addCommas(inputVal) {
 				var decimalSplit = inputVal.split(".");
 				var intPart = decimalSplit[0];
 				var decPart = decimalSplit[1];
@@ -100,7 +86,29 @@ myApp.directive('financeInput', function () {
 					decPart = "." + decPart;
 				}
 				var res = intPart + decPart;
+				return res;
+			}
 
+			return ctrl.$parsers.push(function (inputValue) {
+				var inputVal = element.val();
+
+
+				//get rid of bad input
+				inputVal = clean(inputVal);
+
+				//clear trailing zeros
+				while (inputVal.charAt(0) == '0') {
+					inputVal = inputVal.substr(1);
+				}
+
+
+				//we now have pure number, test for precision and remove least significant digit
+				if (inputVal.replace(/[^0-9]/g, "").length > 10) {
+					inputVal = inputVal.match(/(([0-9][,.]?){10})/).shift();
+				}
+
+
+				var res = addCommas(inputVal);
 				if (res != inputValue) {
 					ctrl.$setViewValue(res);
 					ctrl.$render();
