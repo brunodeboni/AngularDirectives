@@ -53,13 +53,20 @@ myApp.directive('financeInput', function () {
 			return ctrl.$parsers.push(function (inputValue) {
 				var inputVal = element.val();
 
+
+
+				//get rid of bad input
+				inputVal = clean(inputVal);
+
 				//clear trailing zeros
 				while (inputVal.charAt(0) == '0') {
 					inputVal = inputVal.substr(1);
 				}
 
-				//get rid of bad input
-				inputVal = clean(inputVal);
+				//clear ending zeros
+				while (inputVal.charAt(inputVal.length - 1) == '0') {
+					inputVal = inputVal.substr(0,inputVal.length - 1);
+				}
 
 				//we now have pure number, test for precision and remove least significant digit
 				if (inputVal.replace(/[^0-9]/g, "").length > 10) {
