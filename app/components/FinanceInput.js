@@ -10,7 +10,7 @@ myApp.directive('financeInput', function () {
 			}
 
 			element.bind("keyup", function (evt) {
-				if (evt.keyCode == 80) {
+				if (evt.keyCode == 75) {
 					var inputVal = element.val();
 					inputVal = clean(inputVal);
 					var parsedVal = parseFloat(inputVal);
@@ -65,6 +65,8 @@ myApp.directive('financeInput', function () {
 				if (inputVal.replace(/[^0-9]/g, "").length > 10) {
 					inputVal = inputVal.match(/(([0-9][,.]?){10})/).shift();
 				}
+
+
 
 				var decimalSplit = inputVal.split(".");
 				var intPart = decimalSplit[0];
