@@ -1,0 +1,46 @@
+<style type="text/css">
+    .css-form input.ng-invalid.ng-dirty {
+        background-color: #FA787E;
+    }
+
+    .css-form input.ng-valid.ng-dirty {
+        background-color: #78FA89;
+    }
+</style>
+
+
+<h1>Currency Formatting directive</h1>
+
+
+<form name="myForm">
+    <input type="text" ng-model="myForm.money.notional" money="money" finance-input size="30" required name="notional"
+           placeholder="insert currency value"/>
+
+    <div ng-show="myForm.notional.$dirty && myForm.notional.$invalid">Invalid:
+        <span ng-show="myForm.notional.$error.required">You need to enter a currency value.</span>
+    </div>
+
+    <p>Form debugger</p>
+           <pre>
+               form = {{ myForm | json }}
+    </pre>
+
+    <div ng-if="myForm.notional.$invalid">
+        There is an error with the notional field...
+    </div>
+
+        <pre>
+Errors = {{ myForm.notional.$error  | json}}
+Errors  req = {{ myForm.notional.$error.required  | json}}
+    </pre>
+
+    <button ng-click="reset()">RESET</button>
+    <button ng-click="update(user)" ng-disabled="myForm.$invalid">SAVE</button>
+</form>
+<h2>Tips</h2>
+<ol>
+
+    <li> Entering 'k' will multiply the amount by one thousand</li>
+    <li> Entering 'm' will multiply the amount by one million</li>
+    <li> Entering 'b' will multiply the amount by one billion</li>
+</ol>

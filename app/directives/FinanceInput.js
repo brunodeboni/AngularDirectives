@@ -1,19 +1,25 @@
 /**
- * This class is designed to work in a form with a scope variable of type Trade
+ * This directive is designed to work in a form with a scope variable of type Trade
+ * I does a lot of auto validation and formating and only flags an error if non value is entered (required directive on model)
+ * It could be less of an autocomplete by adding maultiple validation steps to the ngModel.$validators but I don't see its denefit over the current implementation
  */
 
 myApp.directive('financeInput', function () {
 	return {
 		restrict: 'A',
 		require: 'ngModel',
+		priority: 1,
+		priority: 1,
 		scope: {
-			trade: '='
+			money: '='
 		},
 
 		/*	controller: function ($scope, $element, $attrs) {
 		 this.errorMessage = ""
 		 },*/
-		link: function (scope, element, attrs, ctrl, ngModel) {
+		//	link: function (scope, element, attrs,  ngModel) {
+		link: function (scope, element, attrs, ngModel) {
+
 
 			/**
 			 *
@@ -23,11 +29,12 @@ myApp.directive('financeInput', function () {
 			 */
 			function convertInputStringToFloat(string) {
 				//get rid of non numeric input
-				return parseFloat(string.replace(/[^\d.]/g, ''));
+
+				var value = string.replace(/[^\d.]/g, '');
+
+				//the edge case of 0 only occurs if they enter no numbers
+				return value !== '' ? parseFloat(value) :'';
 			}
-
-
-			//var errorMessage = "";
 
 			// we listen to keyboard inputs to multiple amounts (this makes it more simple)
 			element.bind("keyup", function (evt) {
@@ -36,8 +43,8 @@ myApp.directive('financeInput', function () {
 					inputVal = convertInputStringToFloat(inputVal);
 					var parsedVal = parseFloat(inputVal);
 					var final = parsedVal * 1000;
-					if (final > maxValue) {
-						element.val(max);
+					if (final > scope.money.maxValue) {
+						element.val(scope.money.maxValueString);
 					}
 					else {
 						element.val(addCommas(final));
@@ -49,8 +56,8 @@ myApp.directive('financeInput', function () {
 					inputVal = convertInputStringToFloat(inputVal);
 					parsedVal = parseFloat(inputVal);
 					final = parsedVal * 1000000;
-					if (final > maxValue) {
-						element.val(max);
+					if (final > scope.money.maxValue) {
+						element.val(scope.money.maxValueString);
 					}
 					else {
 						element.val(addCommas(final));
@@ -62,8 +69,8 @@ myApp.directive('financeInput', function () {
 					inputVal = convertInputStringToFloat(inputVal);
 					parsedVal = parseFloat(inputVal);
 					final = parsedVal * 1000000000;
-					if (final > maxValue) {
-						element.val(max);
+					if (final > scope.money.maxValue) {
+						element.val(scope.money.maxValueString);
 					}
 					else {
 						element.val(addCommas(final));
@@ -76,9 +83,9 @@ myApp.directive('financeInput', function () {
 
 				var inputVal = convertInputStringToFloat(element.val());
 				parsed = parseFloat(inputVal).toString();
-				//clear ending zeros
-				element.val(addCommas(parsed));
-
+				if (parsed !== "NaN") {
+					element.val(addCommas(parsed));
+				}
 			});
 
 			/**
@@ -121,32 +128,37 @@ myApp.directive('financeInput', function () {
 			}
 
 			function testForOverPrecision(numericVal) {
-				return (numericVal.toString().length + 1) > scope.trade.maxPrecision;
+				return (numericVal.toString().length + 1) > scope.money.maxPrecision;
 
 				//takes a string instead of a nunmber, the former seems more elegant/safe
 				//	if (numericVal.replace(/[^1-9]/g, "").length > 10) {
 				//numericVal = numericVal.match(/(([1-9][,.]?){10})/).shift();
 			}
 
-			return ctrl.$parsers.push(function (inputValue) {
-				var originalVal = element.val();
+			//we want to add commas to the number as the user types to aid working with large numbers
+			return ngModel.$parsers.push(function (inputValue) {
+				var originalVal = element.val(), res;
 
 				//I find it easier to work with a parsed number
 				var numericVal = convertInputStringToFloat(originalVal);
+				res = addCommas(numericVal);
 
-
-				if (testForOverPrecision(originalVal)) {
-					//todo valid
-					//errorMessage = "max precision: " + scope.trade.maxPrecision;
-					//	ngModel();
-				}
-
-				var res = addCommas(numericVal);
+				//if (res != inputValue && res != "NaN") {
 				if (res != inputValue) {
-					ctrl.$setViewValue(res);
-					ctrl.$render();
+					ngModel.$setViewValue(res);
+					ngModel.$render();
 				}
+				return res;
 			});
+
+			//we only want let the user only enter comma formatted numbers
+			/*	ngModel.$validators.validPrecision = function (value) {
+			 //errorMessage = "max precision: " + scope.money.maxPrecision;
+
+			 return testForOverPrecision(value);
+
+			 };
+			 */
 
 		}
 	};
