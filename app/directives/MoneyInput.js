@@ -1,23 +1,17 @@
 /**
- * This directive is designed to work in a form with a scope variable of type Trade
+ * This directive is designed to work in a form with a scope variable that represents money
  * I does a lot of auto validation and formating and only flags an error if non value is entered (required directive on model)
- * It could be less of an autocomplete by adding maultiple validation steps to the ngModel.$validators but I don't see its denefit over the current implementation
+ * It could be less of an autocomplete by adding multiple validation steps to the ngModel.$validators but I don't see its benifit over the current implementation
  */
 
 myApp.directive('moneyInput', function () {
 	return {
 		restrict: 'A',
 		require: 'ngModel',
-		priority: 1,
-		priority: 1,
 		scope: {
 			money: '='
 		},
 
-		/*	controller: function ($scope, $element, $attrs) {
-		 this.errorMessage = ""
-		 },*/
-		//	link: function (scope, element, attrs,  ngModel) {
 		link: function (scope, element, attrs, ngModel) {
 
 
@@ -98,6 +92,7 @@ myApp.directive('moneyInput', function () {
 			 * note, you can test a "well formed" numeric string with the regex: /(([1-9][,.]?){10})/ but I feel its safer to work with a number primative =
 			 * @param inputVal
 			 * @returns {string}
+			 * @credits to dubila for the adding commas algo http://stackoverflow.com/a/20356224/1339087 http://www.danubilla.com/
 			 */
 			function addCommas(inputVal) {
 				//сonvert to string
