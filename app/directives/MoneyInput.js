@@ -4,7 +4,7 @@
  * It could be less of an autocomplete by adding maultiple validation steps to the ngModel.$validators but I don't see its denefit over the current implementation
  */
 
-myApp.directive('financeInput', function () {
+myApp.directive('moneyInput', function () {
 	return {
 		restrict: 'A',
 		require: 'ngModel',
