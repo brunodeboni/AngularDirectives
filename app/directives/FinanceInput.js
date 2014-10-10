@@ -33,13 +33,20 @@ myApp.directive('financeInput', function () {
 				var value = string.replace(/[^\d.]/g, '');
 
 				//the edge case of 0 only occurs if they enter no numbers
-				return value !== '' ? parseFloat(value) :'';
+				return value !== '' ? parseFloat(value) : '';
 			}
 
 			// we listen to keyboard inputs to multiple amounts (this makes it more simple)
 			element.bind("keyup", function (evt) {
+				var inputVal = element.val();
+
+				//edge case
+				if (inputVal === '') {
+					return;
+				}
+
 				if (evt.keyCode == 75) {
-					var inputVal = element.val();
+
 					inputVal = convertInputStringToFloat(inputVal);
 					var parsedVal = parseFloat(inputVal);
 					var final = parsedVal * 1000;
@@ -52,7 +59,6 @@ myApp.directive('financeInput', function () {
 				}
 
 				if (evt.keyCode == 77) {
-					inputVal = element.val();
 					inputVal = convertInputStringToFloat(inputVal);
 					parsedVal = parseFloat(inputVal);
 					final = parsedVal * 1000000;
@@ -65,7 +71,6 @@ myApp.directive('financeInput', function () {
 				}
 
 				if (evt.keyCode == 66) {
-					inputVal = element.val();
 					inputVal = convertInputStringToFloat(inputVal);
 					parsedVal = parseFloat(inputVal);
 					final = parsedVal * 1000000000;

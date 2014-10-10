@@ -11,36 +11,36 @@
 
 <h1>Currency Formatting directive</h1>
 
+<div class="row">
 
-<form name="myForm">
-    <input type="text" ng-model="myForm.money.notional" money="money" finance-input size="30" required name="notional"
-           placeholder="insert currency value"/>
+    <div class="col-md-6">
+        <form name="myForm">
 
-    <div ng-show="myForm.notional.$dirty && myForm.notional.$invalid">Invalid:
-        <span ng-show="myForm.notional.$error.required">You need to enter a currency value.</span>
+            <div class="form-group" ng-class="{'has-error': myForm.notional.$invalid && myForm.notional.$touched}">
+                <input type="text" ng-model="myForm.money.notional  " money="money" finance-input size="30" required
+                       name="notional"
+                       class="form-control"
+                       placeholder="Enter notional amount"/>
+
+                <span ng-show="myForm.notional.$error.required && myForm.notional.$touched"
+                      class="help-inline">Required</span>
+
+            </div>
+
+
+            <button ng-click="reset()">RESET</button>
+            <button ng-disabled="myForm.$invalid" type="submit">SAVE</button>
+        </form>
+        <h2>Tips</h2>
+        <ol>
+
+            <li> Entering 'k' will multiply the amount by one thousand</li>
+            <li> Entering 'm' will multiply the amount by one million</li>
+            <li> Entering 'b' will multiply the amount by one billion</li>
+        </ol>
     </div>
-
-    <p>Form debugger</p>
-           <pre>
+</div>
+<p>Form debugger</p>
+<pre>
                form = {{ myForm | json }}
     </pre>
-
-    <div ng-if="myForm.notional.$invalid">
-        There is an error with the notional field...
-    </div>
-
-        <pre>
-Errors = {{ myForm.notional.$error  | json}}
-Errors  req = {{ myForm.notional.$error.required  | json}}
-    </pre>
-
-    <button ng-click="reset()">RESET</button>
-    <button ng-click="update(user)" ng-disabled="myForm.$invalid">SAVE</button>
-</form>
-<h2>Tips</h2>
-<ol>
-
-    <li> Entering 'k' will multiply the amount by one thousand</li>
-    <li> Entering 'm' will multiply the amount by one million</li>
-    <li> Entering 'b' will multiply the amount by one billion</li>
-</ol>
