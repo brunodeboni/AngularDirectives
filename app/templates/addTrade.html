@@ -22,8 +22,8 @@
                        class="form-control"
                        placeholder="Enter notional amount"/>
 
-                <span ng-show="myForm.notional.$error.required && myForm.notional.$touched"
-                      class="help-inline">Required</span>
+                <p class="help-block error" ng-show="myForm.notional.$error.required && myForm.notional.$touched">Required</p>
+
 
             </div>
 
